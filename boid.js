@@ -104,7 +104,7 @@ class Boid {
             steering.div(totalSame);
             steering.setMag(this.maxSpeed);
             steering.sub(this.velocity);
-            steering.limit(this.maxForce);
+            steering.limit(this.maxForce * 1.8);
         }
         if (totalStranger > 0) {
             stranger.div(totalStranger);
@@ -143,14 +143,39 @@ class Boid {
         return steering;
     }
 
+    centerattraction() {
+        let centerVector = createVector(width/2, height/2);
+        let factor = 0.1 * (this.AlignmentStrangerFactor * (1 - this.SeparationStrangerFactor));
+        console.log(factor);
+        let diff = createVector();
+        let d = dist(
+            this.position.x, 
+            this.position.y, 
+            width/2, 
+            height/2
+        );
+        if (factor < 0.5) {
+            diff = p5.Vector.sub(this.position, centerVector);
+            diff.div(d);
+            diff.mult(0.05 - factor);
+        } else {
+            diff = p5.Vector.sub(centerVector, this.position);
+            diff.div(d);
+            diff.mult(factor);
+        }
+        return diff;
+    }
+
     flock(boids) {
         let alignment = this.align(boids);
         let cohesion = this.cohesion(boids);
         let separation = this.separation(boids);
+        let centerattraction = this.centerattraction();
 
         this.acceleration.add(alignment);
         this.acceleration.add(cohesion);
         this.acceleration.add(separation);
+        this.acceleration.add(centerattraction);
     }
 
     update() {
@@ -173,5 +198,6 @@ class Boid {
                 this.position.x + this.dimension * cos(2*PI - PI/6 + this.orientation), this.position.y + this.dimension * sin(2*PI - PI/6 + this.orientation))
         }
         noStroke();
+        fill('rgb(0,0,0)');
     }
 }

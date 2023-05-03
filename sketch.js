@@ -1,9 +1,9 @@
 const flock = [];
 
 let ShapeTypes = [1, 2, 3];   // 1 = square; 2 = circle; 3 = triangle 
-let boidsCount = 120;
+let boidsCount = 80;
 let diversity;                // [0 -> 1] [least diverse -> most diverse]
-let BoidSize = 55; 
+let BoidSize = 70; 
 let inputlang, inputethn, inputmigr, inputspayg, inputpov, inputpsex, inputpsoc, inputpmigr, inputcrime, inputpeace;
 let inputlangtitle, inputethntitle, inputmigrtitle, inputspaygtitle, inputpovtitle, inputpsextitle, inputpsoctitle, inputpmigrtitle, inputcrimetitle, inputpeacetitle;
 let PosXDelta = 30;
@@ -11,9 +11,13 @@ let PosYDelta = 80;
 let inputPosX = 1090;
 let inputPosY = 15;
 let submitbutton;
+let bg;
 
 function setup() {
   createCanvas(1080, 1920);
+  
+  // Hintergrund ändern (Land)
+  bg = loadImage('assets/Brasilien.png');
   
   // Eingabefelder plus Buttons für die Daten
 
@@ -141,7 +145,7 @@ function generateNewShapes() {
 }
 
 function draw() {
-  background(80);
+  background(bg);
 
   for (let boid of flock) {
     boid.flock(flock);
